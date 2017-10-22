@@ -1,5 +1,5 @@
 // header for automower
-#include "HardwareSerial.h"
+#include <SoftwareSerial.h>
 #ifndef AUTOMOWER_H
 #define AUTOMOWER_H
 
@@ -48,24 +48,25 @@ class automower
 
   public:
 
-    automower(Stream &serialOut);
+    automower(uint8_t receivePin, uint8_t transmitPin);
 
-    char* getStatus();
-    char* getMode();
-    char* getTimerStatus();
-    char* getBattery();
-    char* getBatteryTemp();
-    char* getBatteryCapacity();
-    char* getBatteryVoltage();
-    char* getBatteryCharging();
-    char* getBatteryChargingTime();
-    char* getBatteryTimeSinceCharge();
-    char* getBatteryChargingAmount();
-    char* getBatteryChargingAmountWhenSearching();
+    String getStatus();
+    String getMode();
+    String getTimerStatus();
+    String getBattery();
+    String getBatteryTemp();
+    String getBatteryCapacity();
+    String getBatteryVoltage();
+    String getBatteryCharging();
+    String getBatteryChargingTime();
+    String getBatteryTimeSinceCharge();
+    String getBatteryChargingAmount();
+    String getBatteryChargingAmountWhenSearching();
 
   private:
-    Stream* _serialOut;
-    char* send(char* cmd);
+    uint8_t _receivePin;
+    uint8_t _transmitPin;
+    String send(String cmd);
 
 };
 
