@@ -34,12 +34,8 @@ bool loadConfig() {
     return false;
   }
 
-  // Allocate a buffer to store contents of the file.
   std::unique_ptr<char[]> buf(new char[size]);
 
-  // We don't use String here because ArduinoJson library requires the input
-  // buffer to be mutable. If you don't use ArduinoJson, you may as well
-  // use configFile.readString instead.
   configFile.readBytes(buf.get(), size);
 
   StaticJsonBuffer<200> jsonBuffer;
@@ -84,7 +80,7 @@ void startAP() {
 }
 
 
-boolean connectedToAP = false;
+//boolean connectedToAP = false;
 
 void setup(void) {
   Serial.begin(9600);
@@ -118,16 +114,13 @@ void setup(void) {
     if (cpt >= 40) {
       startAP();
     } else {
-
       Serial.println ( "" );
       Serial.print ( "Connected to " );
       Serial.println ( ssid );
       Serial.print ( "IP address: " );
       Serial.println ( WiFi.localIP() );
-
       // web server
       makeAutomowerHandle();
-
       makeDefaultHandle();
       server.begin();
       Serial.println("HTTP server started");
@@ -157,44 +150,54 @@ void makeAutomowerHandle() {
 }
 
 void handleStatus() {
-  handleJson(automower.getStatus());
+  String status = automower.getStatus();
+  String res = "{\"status\":\"+status+\"}";
+  handleJson(res);
 }
 
 void handleMode() {
-  handleJson(automower.getMode());
+  String mode;
+  if (server.method() == HTTP_GET) {
+    mode = automower.getMode();
+  }
+  if (server.method() == HTTP_POST) {
+    mode = automower.setMode(1);
+  }
+  String res = "{\"mode\":\"+mode+\"}";
+  handleJson(res);
 }
 
 void handleBattery() {
-handleJson(automower.getBattery());
+  String battery = automower.getBattery();
 }
 void handleBatteryTemp() {
-handleJson(automower.getBatteryTemp());
+  String batteryTemp = automower.getBatteryTemp();
 }
 
 void handleBatteryCapacity() {
-handleJson(automower.getBatteryCapacity());
+  String batteryCapacity = automower.getBatteryCapacity();
 }
 void handleBatteryVoltage() {
-handleJson(automower.getBatteryVoltage());
+  String batteryVoltage = automower.getBatteryVoltage();
 }
 void handleBatteryCharging() {
-handleJson(automower.getBatteryCharging());
+  String batteryCharging = automower.getBatteryCharging();
 }
 
 void handleBatteryChargingTime() {
-handleJson(automower.getBatteryChargingTime());
+  String batteryChargingTime = automower.getBatteryChargingTime();
 }
 
 void handleBatteryChargingTimeSinceCharge() {
-handleJson(automower.getBatteryTimeSinceCharge());
+  handleJson(automower.getBatteryTimeSinceCharge());
 }
 
 void handleBatteryChargingAmount() {
-handleJson(automower.getBatteryChargingAmount());
+  String batteryChargingAmount = automower.getBatteryChargingAmount();
 }
 
 void handleBatteryChargingAmountWhenSearching() {
-handleJson(automower.getBatteryChargingAmountWhenSearching());
+  String batteryChargingAmountWhenSearching = automower.getBatteryChargingAmountWhenSearching();
 }
 
 
@@ -203,6 +206,8 @@ void handleConfig() {
   if (server.hasArg("ssid") && server.hasArg("password")) {
     Serial.println("saving");
     saveConfig(server.arg("ssid"), server.arg("password"));
+    Serial.println("Restarting");
+    ESP.restart();
   } else {
     Serial.println("missing arg redirect");
     String header = "HTTP/1.1 301 OKLocation: /\r\nCache-Control: no-cache\r\n\r\n";
@@ -219,7 +224,6 @@ void handleRootConfig() {
   content += "</body></html>";
   server.send(200, "text/html", content);
 }
-
 
 void handleNotFound() {
   String message = "File Not Found\n\n";
@@ -240,15 +244,8 @@ void handleJson(String json) {
   server.send(200, "application/json", json);
 }
 
-
-
-
-
-
-
 void loop(void) {
   server.handleClient();
-
   delay(100);
 }
 

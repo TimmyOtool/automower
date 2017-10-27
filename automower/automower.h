@@ -52,6 +52,7 @@ class automower
 
     String getStatus();
     String getMode();
+    String setMode(int mode);
     String getTimerStatus();
     String getBattery();
     String getBatteryTemp();

@@ -30,22 +30,21 @@ String automower::send(String cmd) {
 
 
 String automower::getStatus() {
-  String r = send(R_STATUS);
-  //return r;
-  return "{\"status\":\"+r+\"}";
+  return(send(R_STATUS));
 }
 
 
 String automower::getMode() {
-  String r = send(R_MODE);
-  //return r;
-  return "{\"mode\":\"+r+\"}";
+  return(send(R_MODE));
 }
 
+String automower::setMode(int mode) {
+  return(send(R_MODE));
+}
+
+
 String automower::getTimerStatus() {
-  String r = send(R_TIMERSTATUS);
-  //return r;
-  return "{\"timerStatus\":\"+r+\"}";
+  return(send(R_TIMERSTATUS));
 }
 
 String automower::getBattery() {
@@ -73,7 +72,6 @@ String automower::getBatteryChargingTime() {
 }
 
 String automower::getBatteryTimeSinceCharge() {
-
   return send("test");
 }
 
