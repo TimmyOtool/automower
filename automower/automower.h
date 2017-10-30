@@ -1,46 +1,55 @@
 // header for automower
 #include <SoftwareSerial.h>
+#include <time.h>
 #ifndef AUTOMOWER_H
 #define AUTOMOWER_H
 
-#define R_STATUS "0f01f10000"
-#define R_DAY 0f36b70000"
-#define R_MONTH "0f36b90000"
-#define R_YEAR "0f36bd0000"
-#define R_TIMERSTATUS "0f4a4e0000"
-#define R_BATTERY_CURRENT "0f01eb0000"
-#define R_CHARGING_TIME "0f01ec0000"
-#define R_CHARGING_BATTERY_AMOUNT "0f01ef0000"
-#define R_CHARGING_AMOUT_LEFT_WHEN_STARTING_SEARCH "0f1f00000"
-#define R_BATTERY_TEMP "0f02330000"
-#define R_TIME_SINCE_CHARGING "0f02340000"
-#define R_MOTOR_SPEED "0f2eea0000"
-#define R_USED_BATTERY_AMOUNT "0f2ee00000"
-#define R_BATTERY_VOLTAGE "0f2efe0000"
-#define R_TIMER_ACTIF "0f4a4e0000"
-#define R_WEEK_TIMER1_START_STD "0F4A380000"
-#define R_WEEK_TIMER1_START_MIN "0F4A390000"
-#define R_WEEK_TIMER1_STOP_STD "0F4A3A0000"
-#define R_WEEK_TIMER1_STOP_MIN "0F4A3B0000"
-#define R_WEEKEND_TIMER1_START_STD "0F4A3C0000"
-#define R_WEEKEND_TIMER1_START_MIN "0F4A3D0000"
-#define R_WEEKEND_TIMER1_STOP_STD "0F4A3E0000"
-#define R_WEEKEND_TIMER1_STOP_MIN "0F4A3F0000"
-#define R_WEEK_TIMER2_START_STD "0F4A400000"
-#define R_WEEK_TIMER2_START_MIN "0F4A410000"
-#define R_WEEK_TIMER2_STOP_STD "0F4A420000"
-#define R_WEEK_TIMER2_STOP_MIN "0F4A430000"
-#define R_WEEKEND_TIMER2_START_STD "0F4A440000"
-#define R_WEEKEND_TIMER2_START_MIN "0F4A450000"
-#define R_WEEKEND_TIMER2_STOP_STD "0F4A460000"
-#define R_WEEKEND_TIMER2_STOP_MIN "0F4A470000"
-#define R_TIMER_DAY "0F4A500000"
-#define R_MODE "0F012C0000"
-#define W_TIMERACTIF "0FCA4E0000"
-#define W_TIMERINACTIF "0FCA4E0001"
-#define W_MODE_HOME "0F812C0003"
-#define W_MODE_MAN "0F812C0000"
-#define W_MODE_AUTO "0F812C0001"
+
+#define byte uint8_t
+
+const byte R_MODE[5] = { 0x0F, 0x01,0x2C, 0x00, 0x00};
+const byte R_STATUS[5] = { 0x0f, 0x01, 0xf1, 0x00, 0x00 };
+
+const byte R_DAY[5] =  { 0x0f, 0x36, 0xb7, 0x00, 0x00 };
+const byte R_MONTH[5] =  { 0x0f, 0x36, 0xb9, 0x00, 0x00 };
+const byte R_YEAR[5] =  { 0x0f, 0x36, 0xbd, 0x00, 0x00 };
+
+const byte R_BATTERY_CURRENT[5] =  { 0x0f, 0x01, 0xeb, 0x00, 0x00 };
+const byte R_CHARGING_TIME[5] =  { 0x0f, 0x01, 0xec, 0x00, 0x00 };
+const byte R_CHARGING_BATTERY_AMOUNT[5] =  { 0x0f, 0x01, 0xef, 0x00, 0x00 };
+const byte R_CHARGING_AMOUT_LEFT_WHEN_STARTING_SEARCH[5] =  {0x0f, 0x1, 0xf0, 0x00, 0x00 };
+const byte R_BATTERY_TEMP[5] =  { 0x0f, 0x02, 0x33, 0x00, 0x00 };
+const byte R_TIME_SINCE_CHARGING[5] =  { 0x0f, 0x02, 0x34, 0x00, 0x00 };
+const byte R_MOTOR_SPEED[5] =  { 0x0f, 0x2e, 0xea, 0x00, 0x00};
+const byte R_USED_BATTERY_AMOUNT[5] =  { 0x0f, 0x2e, 0xe0, 0x00, 0x00};
+const byte R_BATTERY_VOLTAGE[5] =  { 0x0f, 0x2e, 0xfe, 0x00, 0x00};
+
+const byte R_TIMER_STATUS[5] =  { 0x0f, 0x4a, 0x4e, 0x00, 0x00};
+const byte R_WEEK_TIMER1_START_STD[5] =  { 0x0F, 0x4A, 0x38, 0x00, 0x00};
+const byte R_WEEK_TIMER1_START_MIN[5] =  { 0x0F, 0x4A, 0x39, 0x00, 0x00};
+const byte R_WEEK_TIMER1_STOP_STD[5] =  { 0x0F,0x4A, 0x3A, 0x00, 0x00 };
+const byte R_WEEK_TIMER1_STOP_MIN[5] =  { 0x0F,0x4A, 0x3B, 0x00, 0x00};
+const byte R_WEEKEND_TIMER1_START_STD[5] =  { 0x0F,0x4A, 0x3C, 0x00, 0x00};
+const byte R_WEEKEND_TIMER1_START_MIN[5] =  { 0x0F, 0x4A, 0x3D, 0x00, 0x00};
+const byte R_WEEKEND_TIMER1_STOP_STD[5] =  { 0x0F,0x4A, 0x3E, 0x00, 0x00};
+const byte R_WEEKEND_TIMER1_STOP_MIN[5] =  { 0x0F,0x4A, 0x3F, 0x00, 0x00};
+const byte R_WEEK_TIMER2_START_STD[5] =  { 0x0F,0x4A, 0x40, 0x00, 0x00};
+const byte R_WEEK_TIMER2_START_MIN[5] =  { 0x0F,0x4A, 0x41, 0x00, 0x00};
+const byte R_WEEK_TIMER2_STOP_STD[5] =  { 0x0F,0x4A, 0x42, 0x00, 0x00 };
+const byte R_WEEK_TIMER2_STOP_MIN[5] =  { 0x0F,0x4A, 0x43, 0x00, 0x00};
+const byte R_WEEKEND_TIMER2_START_STD[5] =  { 0x0F, 0x4A, 0x44, 0x00, 0x00};
+const byte R_WEEKEND_TIMER2_START_MIN[5] =  { 0x0F,0x4A, 0x45, 0x00, 0x00};
+const byte R_WEEKEND_TIMER2_STOP_STD[5] =  { 0x0F,0x4A, 0x46, 0x00, 0x00};
+const byte R_WEEKEND_TIMER2_STOP_MIN[5] =  { 0x0F, 0x4A, 0x47, 0x00, 0x00};
+const byte R_TIMER_DAY[5] =  { 0x0F, 0x4A,0x50, 0x00, 0x00};
+
+// WRITE
+const byte W_TIMERACTIF[5] = { 0x0F, 0xCA,0x4E, 0x00, 0x00};
+const byte W_TIMERINACTIF[5] = { 0x0F, 0xCA,0x4E, 0x00, 0x01};
+                              
+const byte W_MODE_HOME[5] = { 0x0F, 0x81, 0x2C, 0x00, 0x03};
+const byte W_MODE_MAN[5] = { 0x0F, 0x81,0x2C, 0x00, 0x00};
+const byte W_MODE_AUTO[5] = { 0x0F, 0x81,0x2C, 0x00, 0x01 };
 
 
 class automower
@@ -65,9 +74,10 @@ class automower
     String getBatteryChargingAmountWhenSearching();
 
   private:
-    uint8_t _receivePin;
-    uint8_t _transmitPin;
-    String send(String cmd);
+    byte _receivePin;
+    byte _transmitPin;
+    byte input[8];
+    String send(const byte* cmd);
 
 };
 

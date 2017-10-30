@@ -20,7 +20,6 @@ ESP8266WebServer server(webServerPort);
 
 automower automower(IN, OUT);
 
-
 bool loadConfig() {
   File configFile = SPIFFS.open("/config.json", "r");
   if (!configFile) {
