@@ -139,13 +139,13 @@ void setup(void) {
     Serial.println ( password );
     WiFi.begin(ssid, password);
 
-    int cpt=0;
-    while ( WiFi.status() != WL_CONNECTED && cpt<40) {
+    int cpt = 0;
+    while ( WiFi.status() != WL_CONNECTED && cpt < 40) {
       delay ( 500 );
       Serial.print ( "." );
       cpt++;
     }
-    if(cpt>=40){
+    if (cpt >= 40) {
       startAP();
     }
 
